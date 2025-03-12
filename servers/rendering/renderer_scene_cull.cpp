@@ -2233,6 +2233,9 @@ void RendererSceneCull::_light_instance_setup_directional_shadow(int p_shadow_in
 		case RS::LIGHT_DIRECTIONAL_SHADOW_PARALLEL_4_SPLITS:
 			splits = 4;
 			break;
+		case RS::LIGHT_DIRECTIONAL_SHADOW_VIRTUAL_MAP:
+			splits = 1;
+			break;
 	}
 
 	real_t distances[5];
