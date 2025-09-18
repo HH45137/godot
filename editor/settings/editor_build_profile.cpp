@@ -206,6 +206,7 @@ const HashMap<EditorBuildProfile::BuildOption, LocalVector<EditorBuildProfile::B
 	{ BUILD_OPTION_VULKAN, {
 			BUILD_OPTION_FORWARD_RENDERER,
 			BUILD_OPTION_MOBILE_RENDERER,
+			BUILD_OPTION_DEFERRED_RENDERER,
 	} },
 	{ BUILD_OPTION_D3D12, {
 			BUILD_OPTION_FORWARD_RENDERER,
@@ -391,6 +392,7 @@ String EditorBuildProfile::get_build_option_name(BuildOption p_build_option) {
 		TTRC("Wayland"),
 		TTRC("X11"),
 		TTRC("RenderingDevice"),
+		TTRC("Deferred Renderer"),
 		TTRC("Forward+ Renderer"),
 		TTRC("Mobile Renderer"),
 		TTRC("Vulkan"),
@@ -424,6 +426,7 @@ String EditorBuildProfile::get_build_option_description(BuildOption p_build_opti
 		TTRC("Wayland display (Linux only)."),
 		TTRC("X11 display (Linux only)."),
 		TTRC("RenderingDevice based rendering (if disabled, the OpenGL backend is required)."),
+		TTRC("Deferred renderer for advanced 3D graphics."),
 		TTRC("Forward+ renderer for advanced 3D graphics."),
 		TTRC("Mobile renderer for less advanced 3D graphics."),
 		TTRC("Vulkan backend of RenderingDevice."),
@@ -596,6 +599,7 @@ void EditorBuildProfile::_bind_methods() {
 	BIND_ENUM_CONSTANT(BUILD_OPTION_WAYLAND);
 	BIND_ENUM_CONSTANT(BUILD_OPTION_X11);
 	BIND_ENUM_CONSTANT(BUILD_OPTION_RENDERING_DEVICE);
+	BIND_ENUM_CONSTANT(BUILD_OPTION_DEFERRED_RENDERER);
 	BIND_ENUM_CONSTANT(BUILD_OPTION_FORWARD_RENDERER);
 	BIND_ENUM_CONSTANT(BUILD_OPTION_MOBILE_RENDERER);
 	BIND_ENUM_CONSTANT(BUILD_OPTION_VULKAN);
@@ -638,7 +642,7 @@ EditorBuildProfile::EditorBuildProfile() {
 	};
 	build_option_settings.insert(BUILD_OPTION_OPENXR, settings_x11);
 	HashMap<String, LocalVector<Variant>> settings_rd = {
-		{ "rendering/renderer/rendering_method", { "forward_plus", "mobile" } },
+		{ "rendering/renderer/rendering_method", { "forward_plus", "mobile", "deferred" } },
 		{ "rendering/renderer/rendering_method.mobile", { "forward_plus", "mobile" } },
 		{ "rendering/renderer/rendering_method.web", { "forward_plus", "mobile" } },
 	};

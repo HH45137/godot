@@ -5495,6 +5495,8 @@ String EditorNode::_get_system_info() const {
 		rendering_method = "Mobile";
 	} else if (rendering_method == "gl_compatibility") {
 		rendering_method = "Compatibility";
+	} else if (rendering_method == "deferred") {
+		rendering_method = "Deferred";
 	}
 	if (driver_name == "vulkan") {
 		driver_name = "Vulkan";
@@ -7148,6 +7150,8 @@ void EditorNode::_update_renderer_color() {
 		renderer->add_theme_color_override(SceneStringName(font_color), theme->get_color(SNAME("mobile_color"), EditorStringName(Editor)));
 	} else if (rendering_method == "gl_compatibility") {
 		renderer->add_theme_color_override(SceneStringName(font_color), theme->get_color(SNAME("gl_compatibility_color"), EditorStringName(Editor)));
+	} else if (rendering_method == "deferred") {
+		renderer->add_theme_color_override(SceneStringName(font_color), theme->get_color(SNAME("forward_plus_color"), EditorStringName(Editor)));
 	}
 }
 
@@ -7180,6 +7184,9 @@ void EditorNode::_add_renderer_entry(const String &p_renderer_name, bool p_mark_
 	if (p_renderer_name == "gl_compatibility") {
 		item_text = TTR("Compatibility");
 	}
+	if (p_renderer_name == "deferred") {
+		item_text = TTR("Deferred");
+	}
 	if (p_mark_overridden) {
 		// TRANSLATORS: The placeholder is the rendering method that has overridden the default one.
 		item_text = vformat(TTR("%s (Overridden)"), item_text);
@@ -7193,7 +7200,7 @@ void EditorNode::_set_renderer_name_save_and_restart() {
 		// Also change the mobile override if changing to a compatible rendering method.
 		// This prevents visual discrepancies between desktop and mobile platforms.
 		ProjectSettings::get_singleton()->set("rendering/renderer/rendering_method.mobile", renderer_request);
-	} else if (renderer_request == "forward_plus") {
+	} else if (renderer_request == "forward_plus" || renderer_request == "deferred") {
 		// Use the equivalent mobile rendering method. This prevents the rendering method from staying
 		// on its old choice if moving from `gl_compatibility` to `forward_plus`.
 		ProjectSettings::get_singleton()->set("rendering/renderer/rendering_method.mobile", "mobile");

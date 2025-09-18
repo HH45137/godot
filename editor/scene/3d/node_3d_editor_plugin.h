@@ -530,6 +530,7 @@ private:
 		ALL,
 		FORWARD_PLUS,
 		FORWARD_PLUS_MOBILE,
+		DEFERRED,
 	};
 
 	void _set_lock_view_rotation(bool p_lock_rotation);

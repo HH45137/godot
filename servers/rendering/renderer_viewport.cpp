@@ -975,7 +975,7 @@ void RendererViewport::viewport_set_scaling_3d_mode(RID p_viewport, RS::Viewport
 	Viewport *viewport = viewport_owner.get_or_null(p_viewport);
 	ERR_FAIL_NULL(viewport);
 	const String rendering_method = OS::get_singleton()->get_current_rendering_method();
-	if (rendering_method != "forward_plus") {
+	if (rendering_method != "forward_plus" || rendering_method != "deferred") {
 		ERR_FAIL_COND_EDMSG(p_mode == RS::VIEWPORT_SCALING_3D_MODE_FSR, "FSR1 is only available when using the Forward+ renderer.");
 		ERR_FAIL_COND_EDMSG(p_mode == RS::VIEWPORT_SCALING_3D_MODE_FSR2, "FSR2 is only available when using the Forward+ renderer.");
 		ERR_FAIL_COND_EDMSG(p_mode == RS::VIEWPORT_SCALING_3D_MODE_METALFX_TEMPORAL, "MetalFX Temporal is only available when using the Forward+ renderer.");
@@ -1386,7 +1386,7 @@ void RendererViewport::viewport_set_screen_space_aa(RID p_viewport, RS::Viewport
 void RendererViewport::viewport_set_use_taa(RID p_viewport, bool p_use_taa) {
 	Viewport *viewport = viewport_owner.get_or_null(p_viewport);
 	ERR_FAIL_NULL(viewport);
-	ERR_FAIL_COND_EDMSG(OS::get_singleton()->get_current_rendering_method() != "forward_plus", "TAA is only available when using the Forward+ renderer.");
+	ERR_FAIL_COND_EDMSG(OS::get_singleton()->get_current_rendering_method() != "forward_plus" || OS::get_singleton()->get_current_rendering_method() != "deferred", "TAA is only available when using the Forward+ renderer.");
 
 	if (viewport->use_taa == p_use_taa) {
 		return;
