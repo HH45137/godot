@@ -317,6 +317,10 @@ uint16_t SceneShaderDeferred::ShaderData::_get_shader_version(PipelineVersion p_
 
 			return ShaderVersion::SHADER_VERSION_DEPTH_PASS_WITH_MATERIAL + ShaderVersion::SHADER_VERSION_COLOR_PASS + shader_flags;
 		} break;
+		case PIPELINE_VERSION_GEOMETRY_PASS:
+			return ShaderVersion::SHADER_VERSION_GEOMETRY_PASS + ubershader_base;
+		case PIPELINE_VERSION_LIGHTING_PASS:
+			return ShaderVersion::SHADER_VERSION_LIGHTING_PASS + ubershader_base;
 		default: {
 			DEV_ASSERT(false && "Unknown pipeline version.");
 			return 0;

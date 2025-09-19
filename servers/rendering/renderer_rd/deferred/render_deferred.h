@@ -55,6 +55,10 @@
 #define RB_TEX_NORMAL_ROUGHNESS_MSAA SNAME("normal_roughness_msaa")
 #define RB_TEX_VOXEL_GI SNAME("voxel_gi")
 #define RB_TEX_VOXEL_GI_MSAA SNAME("voxel_gi_msaa")
+#define RB_TEX_POSITION SNAME("position")
+#define RB_TEX_POSITION_MSAA SNAME("position_msaa")
+#define RB_TEX_ALBEDO SNAME("albedo")
+#define RB_TEX_ALBEDO_MSAA SNAME("albedo_msaa")
 
 namespace RendererSceneRenderImplementation {
 
@@ -140,6 +144,18 @@ public:
 		RID get_voxelgi(uint32_t p_layer) { return render_buffers->get_texture_slice(RB_SCOPE_DEFERRED, RB_TEX_VOXEL_GI, p_layer, 0); }
 		RID get_voxelgi_msaa(uint32_t p_layer) { return render_buffers->get_texture_slice(RB_SCOPE_DEFERRED, RB_TEX_VOXEL_GI_MSAA, p_layer, 0); }
 
+		void ensure_position();
+		bool has_position() const { return render_buffers->has_texture(RB_SCOPE_DEFERRED, RB_TEX_POSITION); }
+		RID get_position() const { return render_buffers->get_texture(RB_SCOPE_DEFERRED, RB_TEX_POSITION); }
+		RID get_position(uint32_t p_layer) { return render_buffers->get_texture_slice(RB_SCOPE_DEFERRED, RB_TEX_POSITION, p_layer, 0); }
+		RID get_position_msaa(uint32_t p_layer) { return render_buffers->get_texture_slice(RB_SCOPE_DEFERRED, RB_TEX_POSITION_MSAA, p_layer, 0); }
+
+		void ensure_albedo();
+		bool has_albedo() const { return render_buffers->has_texture(RB_SCOPE_DEFERRED, RB_TEX_ALBEDO); }
+		RID get_albedo() const { return render_buffers->get_texture(RB_SCOPE_DEFERRED, RB_TEX_ALBEDO); }
+		RID get_albedo(uint32_t p_layer) { return render_buffers->get_texture_slice(RB_SCOPE_DEFERRED, RB_TEX_ALBEDO, p_layer, 0); }
+		RID get_albedo_msaa(uint32_t p_layer) { return render_buffers->get_texture_slice(RB_SCOPE_DEFERRED, RB_TEX_ALBEDO_MSAA, p_layer, 0); }
+
 		void ensure_fsr2(RendererRD::FSR2Effect *p_effect);
 		RendererRD::FSR2Context *get_fsr2_context() const { return fsr2_context; }
 
@@ -163,6 +179,10 @@ public:
 		static uint32_t get_normal_roughness_usage_bits(bool p_resolve, bool p_msaa, bool p_storage);
 		static RD::DataFormat get_voxelgi_format();
 		static uint32_t get_voxelgi_usage_bits(bool p_resolve, bool p_msaa, bool p_storage);
+		RD::DataFormat get_position_format() const;
+		uint32_t get_position_usage_bits(bool p_resolve, bool p_msaa, bool p_storage) const;
+		RD::DataFormat get_albedo_format() const;
+		uint32_t get_albedo_usage_bits(bool p_resolve, bool p_msaa, bool p_storage) const;
 	};
 
 private:

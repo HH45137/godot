@@ -82,6 +82,30 @@ void RenderDeferred::RenderBufferDataDeferred::ensure_voxelgi() {
 	}
 }
 
+void RenderDeferred::RenderBufferDataDeferred::ensure_position() {
+	ERR_FAIL_NULL(render_buffers);
+
+	if (!render_buffers->has_texture(RB_SCOPE_DEFERRED, RB_TEX_POSITION)) {
+		bool msaa = render_buffers->get_msaa_3d() != RS::VIEWPORT_MSAA_DISABLED;
+		render_buffers->create_texture(RB_SCOPE_DEFERRED, RB_TEX_POSITION, get_position_format(), get_position_usage_bits(msaa, false, render_buffers->get_can_be_storage()));
+		if (msaa) {
+			render_buffers->create_texture(RB_SCOPE_DEFERRED, RB_TEX_POSITION_MSAA, get_position_format(), get_position_usage_bits(false, msaa, render_buffers->get_can_be_storage()), render_buffers->get_texture_samples());
+		}
+	}
+}
+
+void RendererSceneRenderImplementation::RenderDeferred::RenderBufferDataDeferred::ensure_albedo() {
+	ERR_FAIL_NULL(render_buffers);
+
+	if (!render_buffers->has_texture(RB_SCOPE_DEFERRED, RB_TEX_ALBEDO)) {
+		bool msaa = render_buffers->get_msaa_3d() != RS::VIEWPORT_MSAA_DISABLED;
+		render_buffers->create_texture(RB_SCOPE_DEFERRED, RB_TEX_ALBEDO, get_albedo_format(), get_albedo_usage_bits(msaa, false, render_buffers->get_can_be_storage()));
+		if (msaa) {
+			render_buffers->create_texture(RB_SCOPE_DEFERRED, RB_TEX_ALBEDO_MSAA, get_albedo_format(), get_albedo_usage_bits(false, msaa, render_buffers->get_can_be_storage()), render_buffers->get_texture_samples());
+		}
+	}
+}
+
 void RenderDeferred::RenderBufferDataDeferred::ensure_fsr2(RendererRD::FSR2Effect *p_effect) {
 	if (fsr2_context == nullptr) {
 		fsr2_context = p_effect->create_context(render_buffers->get_internal_size(), render_buffers->get_target_size());
@@ -271,6 +295,22 @@ RD::DataFormat RenderDeferred::RenderBufferDataDeferred::get_voxelgi_format() {
 }
 
 uint32_t RenderDeferred::RenderBufferDataDeferred::get_voxelgi_usage_bits(bool p_resolve, bool p_msaa, bool p_storage) {
+	return RenderSceneBuffersRD::get_color_usage_bits(p_resolve, p_msaa, p_storage);
+}
+
+RD::DataFormat RenderDeferred::RenderBufferDataDeferred::get_position_format() const {
+	return RD::DATA_FORMAT_R16G16B16_SFLOAT;
+}
+
+uint32_t RendererSceneRenderImplementation::RenderDeferred::RenderBufferDataDeferred::get_position_usage_bits(bool p_resolve, bool p_msaa, bool p_storage) const {
+	return RenderSceneBuffersRD::get_color_usage_bits(p_resolve, p_msaa, p_storage);
+}
+
+RD::DataFormat RenderDeferred::RenderBufferDataDeferred::get_albedo_format() const {
+	return RD::DATA_FORMAT_R16G16B16A16_SFLOAT;
+}
+
+uint32_t RendererSceneRenderImplementation::RenderDeferred::RenderBufferDataDeferred::get_albedo_usage_bits(bool p_resolve, bool p_msaa, bool p_storage) const {
 	return RenderSceneBuffersRD::get_color_usage_bits(p_resolve, p_msaa, p_storage);
 }
 
